@@ -1,7 +1,7 @@
 [PreviousGenFiles]
-HeaderPath=D:/Workspace/Projects/PC_FAN_PWM/v1.3/Inc
+HeaderPath=D:/Workspace/Projects/PC_FAN_PWM/v2/v2.0/Inc
 HeaderFiles=stm32f1xx_it.h;stm32f1xx_hal_conf.h;main.h;
-SourcePath=D:/Workspace/Projects/PC_FAN_PWM/v1.3/Src
+SourcePath=D:/Workspace/Projects/PC_FAN_PWM/v2/v2.0/Src
 SourceFiles=stm32f1xx_it.c;stm32f1xx_hal_msp.c;main.c;
 
 [PreviousLibFiles]

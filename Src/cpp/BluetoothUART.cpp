@@ -20,14 +20,17 @@ public:
     BluetoothUART(){
     }
 
-    void Receiver(UART_HandleTypeDef* huart) {
+    void receiver(UART_HandleTypeDef* huart) {
 //        if (huart->RxXferCount != 0) {
             HAL_UART_Receive_IT(huart, (uint8_t *) str1, 10);
 //        }
     }
 
-    void Transmitter(UART_HandleTypeDef* huart)
+    void transmitter(UART_HandleTypeDef* huart)
     {
+//  HAL_UART_Transmit(&huart2, (uint8_t*)test.data(), test.size(), 0x1000);
+//  uint8_t a[3];
+//  HAL_UART_Receive_IT(&huart2,(uint8_t*)a,3);
         if (str1[0] != 0)
             HAL_UART_Transmit_IT(huart, (uint8_t *) str1, 10);
 

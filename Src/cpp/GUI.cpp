@@ -34,8 +34,7 @@ public:
         // ST7735_DrawString(0, 18, buff, Font_11x18, ST7735_WHITE, ST7735_BLACK);
 
 
-        for (int i = 0; i < sizeof(buff); i++)
-        {
+        for (int i = 0; i < sizeof(buff); i++) {
             buff[i]=0;
         }
 

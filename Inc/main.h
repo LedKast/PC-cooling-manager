@@ -49,6 +49,8 @@ extern "C" {
 
 /* USER CODE END EM */
 
+void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
+
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -57,6 +59,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define ONBOARD_LED_Pin GPIO_PIN_13
+#define ONBOARD_LED_GPIO_Port GPIOC
+#define TEMP_ADDITIONAL_Pin GPIO_PIN_2
+#define TEMP_ADDITIONAL_GPIO_Port GPIOB
+#define TEMP_WATER_Pin GPIO_PIN_10
+#define TEMP_WATER_GPIO_Port GPIOB
+#define TEMP_VRM_Pin GPIO_PIN_11
+#define TEMP_VRM_GPIO_Port GPIOB
 #define ST7735_RES_Pin GPIO_PIN_12
 #define ST7735_RES_GPIO_Port GPIOB
 #define ST7735_DC_Pin GPIO_PIN_13
@@ -65,6 +75,14 @@ void Error_Handler(void);
 #define ST7735_CS_GPIO_Port GPIOB
 #define ST7736_BL_Pin GPIO_PIN_15
 #define ST7736_BL_GPIO_Port GPIOB
+#define PWM1_FRONT_Pin GPIO_PIN_8
+#define PWM1_FRONT_GPIO_Port GPIOA
+#define PWM2_BOTTOM_Pin GPIO_PIN_9
+#define PWM2_BOTTOM_GPIO_Port GPIOA
+#define PWM3_BACK_Pin GPIO_PIN_10
+#define PWM3_BACK_GPIO_Port GPIOA
+#define PWM4_TOP_Pin GPIO_PIN_11
+#define PWM4_TOP_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

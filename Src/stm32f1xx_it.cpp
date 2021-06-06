@@ -232,8 +232,8 @@ void USART2_IRQHandler(void)
 /* USER CODE BEGIN 1 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
     if(huart == &huart2) {
-        btUART.Transmitter(huart);
-        btUART.Receiver(huart);
+        btUART.transmitter(huart);
+        btUART.receiver(huart);
     }
 }
 /* USER CODE END 1 */
