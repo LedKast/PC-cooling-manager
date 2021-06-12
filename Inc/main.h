@@ -32,6 +32,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "ds18b20.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -61,8 +62,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define ONBOARD_LED_Pin GPIO_PIN_13
 #define ONBOARD_LED_GPIO_Port GPIOC
-#define TEMP_ADDITIONAL_Pin GPIO_PIN_2
-#define TEMP_ADDITIONAL_GPIO_Port GPIOB
+#define PWM3_BACK_Pin GPIO_PIN_0
+#define PWM3_BACK_GPIO_Port GPIOB
+#define PWM4_TOP_Pin GPIO_PIN_1
+#define PWM4_TOP_GPIO_Port GPIOB
 #define TEMP_WATER_Pin GPIO_PIN_10
 #define TEMP_WATER_GPIO_Port GPIOB
 #define TEMP_VRM_Pin GPIO_PIN_11
@@ -75,14 +78,18 @@ void Error_Handler(void);
 #define ST7735_CS_GPIO_Port GPIOB
 #define ST7736_BL_Pin GPIO_PIN_15
 #define ST7736_BL_GPIO_Port GPIOB
-#define PWM1_FRONT_Pin GPIO_PIN_8
-#define PWM1_FRONT_GPIO_Port GPIOA
-#define PWM2_BOTTOM_Pin GPIO_PIN_9
-#define PWM2_BOTTOM_GPIO_Port GPIOA
-#define PWM3_BACK_Pin GPIO_PIN_10
-#define PWM3_BACK_GPIO_Port GPIOA
-#define PWM4_TOP_Pin GPIO_PIN_11
-#define PWM4_TOP_GPIO_Port GPIOA
+#define TACH1_FRONT_Pin GPIO_PIN_8
+#define TACH1_FRONT_GPIO_Port GPIOA
+#define TACH2_BOTTOM_Pin GPIO_PIN_9
+#define TACH2_BOTTOM_GPIO_Port GPIOA
+#define TACH3_BACK_Pin GPIO_PIN_10
+#define TACH3_BACK_GPIO_Port GPIOA
+#define TACH4_TOP_Pin GPIO_PIN_11
+#define TACH4_TOP_GPIO_Port GPIOA
+#define PWM1_FRONT_Pin GPIO_PIN_4
+#define PWM1_FRONT_GPIO_Port GPIOB
+#define PWM2_BOTTOM_Pin GPIO_PIN_5
+#define PWM2_BOTTOM_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
