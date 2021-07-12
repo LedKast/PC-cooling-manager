@@ -14,6 +14,7 @@ class TempReader {
 
 public:
     void read() {
+        // TODO усреднять значение за некоторый промежуток времени (например через стек или кольцевую очередь)
         set_port(VRM_SENS); // VRM
         readDS18(&temps.vrmTemp, &ds18_1);
 

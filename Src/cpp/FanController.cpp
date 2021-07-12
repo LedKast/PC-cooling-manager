@@ -1,4 +1,6 @@
 #include <configuration_default.h>
+#include <map>
+
 
 class FanController {
     volatile uint32_t* pwmChannel;
@@ -18,12 +20,12 @@ public:
     void updateChannel(uint16_t temp, uint16_t minLimit, uint16_t maxLimit, uint16_t updateDelay) {
         if (HAL_GetTick() - timer > updateDelay) {
             if (temp < minLimit) {
-                *pwmChannel = fanMap[tempMap[minLimit]] * 2.55;
+                *pwmChannel = std::min((int)(fanMap.find(tempMap.find(minLimit)->second)->second * 2.55), 255);
             } else
                 if (temp > maxLimit) {
-                    *pwmChannel = fanMap[tempMap[maxLimit]] * 2.55;
+                    *pwmChannel = std::min((int)(fanMap.find(tempMap.find(maxLimit)->second)->second * 2.55), 255);
                 } else {
-                    *pwmChannel = fanMap[tempMap[temp]] * 2.55;
+                    *pwmChannel = std::min((int)(fanMap.find(tempMap.find(temp)->second)->second * 2.55), 255);
                 }
 
             timer = HAL_GetTick();

@@ -9,6 +9,9 @@ class GUI {
     char buff3[3];
     char buff4[4];
     long redrawTimer = -1;
+    long animationTimer = -1;
+    bool animation = true;
+    uint8_t lineSpace = 22;
 
 public:
 
@@ -21,12 +24,21 @@ public:
 
     void draw(TempModel* tempModel, uint16_t refreshTime = 500) {
         if (HAL_GetTick() - redrawTimer > refreshTime) {
-            // LINE 1
+            // LINE 1 (water temp)
             drawLabel(0, 0, "WTR", "TMP", ST7735_WHITE);
             drawValue2(10 * 3, 1, tempModel->waterTemp, ST7735_WHITE);
             if (tempModel->waterTemp >= 20) {
+                // TODO fix offset limit
                 drawBarChart(55, 0, 51, 10, tempModel->waterTemp, 20, 50, 0x74F4, ST7735_WHITE);
             }
+
+            // LINE 2 (front)
+            uint8_t lineMultiplier = 1;
+            drawLabel(0, lineSpace * lineMultiplier, "F->", "FAN", ST7735_WHITE);
+            drawValue4(10 * 3, lineSpace * lineMultiplier + 1, 1000, ST7735_WHITE);
+//            drawBarChart(55, lineSpace * 1, 51, 10, tempModel->waterTemp, 450, 1000, 0x74F4, ST7735_WHITE);
+
+            drawAnimation(100, 100, 7, ST7735_WHITE);
 
             redrawTimer = HAL_GetTick();
         }
@@ -61,6 +73,21 @@ private:
         ST7735_DrawRect(x, y, w, h, frameColor);
         ST7735_FillRectangle(x + 2, y + 2, w - 4, 6, ST7735_BLACK);
         ST7735_FillRectangle(x + 2, y + 2, (int)(((float)(value - offset)/(float)limit)*(float)(w - 4))%(w - 3), h - 4, color);
+    }
+
+    void drawAnimation(int16_t x, int16_t y, uint8_t size, uint16_t color) {
+        if (animation) {
+            ST7735_FillCircle(x, y, size, color);
+        } else {
+            ST7735_FillCircle(x, y, size, ST7735_BLACK);
+            ST7735_DrawCircle(x, y, size, color);
+        }
+
+        if (HAL_GetTick() - animationTimer > 1000) {
+            animationTimer = HAL_GetTick();
+            animation = !animation;
+        }
+
     }
 
 //    void demoTFT() {

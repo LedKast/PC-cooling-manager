@@ -62,6 +62,9 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define ONBOARD_LED_Pin GPIO_PIN_13
 #define ONBOARD_LED_GPIO_Port GPIOC
+#define OPT_BTN_Pin GPIO_PIN_4
+#define OPT_BTN_GPIO_Port GPIOA
+#define OPT_BTN_EXTI_IRQn EXTI4_IRQn
 #define PWM3_BACK_Pin GPIO_PIN_0
 #define PWM3_BACK_GPIO_Port GPIOB
 #define PWM4_TOP_Pin GPIO_PIN_1
@@ -78,14 +81,6 @@ void Error_Handler(void);
 #define ST7735_CS_GPIO_Port GPIOB
 #define ST7736_BL_Pin GPIO_PIN_15
 #define ST7736_BL_GPIO_Port GPIOB
-#define TACH1_FRONT_Pin GPIO_PIN_8
-#define TACH1_FRONT_GPIO_Port GPIOA
-#define TACH2_BOTTOM_Pin GPIO_PIN_9
-#define TACH2_BOTTOM_GPIO_Port GPIOA
-#define TACH3_BACK_Pin GPIO_PIN_10
-#define TACH3_BACK_GPIO_Port GPIOA
-#define TACH4_TOP_Pin GPIO_PIN_11
-#define TACH4_TOP_GPIO_Port GPIOA
 #define PWM1_FRONT_Pin GPIO_PIN_4
 #define PWM1_FRONT_GPIO_Port GPIOB
 #define PWM2_BOTTOM_Pin GPIO_PIN_5
