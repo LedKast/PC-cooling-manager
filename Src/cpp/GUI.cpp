@@ -1,6 +1,7 @@
 #include "st7735.h"
 #include "fonts.h"
-#include <stdio.h>
+#include <cstdio>
+#include "Configuration.h"
 
 #include "model/TempModel.cpp"
 #include "model/FanModel.cpp"
@@ -11,8 +12,11 @@ class GUI {
     char buff5[5];
     long redrawTimer = -1;
     long animationTimer = -1;
-    bool animation = true;
     uint8_t lineSpace = 22;
+
+    uint8_t animationSize = 6;
+    bool animationDirection = true;
+    uint8_t animationTargetSize = animationSize;
 
 public:
 
@@ -25,29 +29,66 @@ public:
 
     void draw(TempModel* tempModel, FanModel& fanModel, uint16_t refreshTime = 500) {
         if (HAL_GetTick() - redrawTimer > refreshTime) {
-            // LINE 1 (water temp)
-            drawLabel(0, 0, "WTR", "TMP", ST7735_WHITE);
-            draw2digit(10 * 3, 1, tempModel->waterTemp, ST7735_WHITE);
-            if (tempModel->waterTemp >= 20) {
-                // TODO fix offset limit
-                drawBarChart(55, 0, 51, 10, tempModel->waterTemp, 20, 50, 0x74F4, ST7735_WHITE);
-            }
+            // LINE 1 left (water temp)
+            uint8_t lineMultiplier = 0;
+            drawLabel(0, lineSpace * lineMultiplier, "WTR", "", ST7735_TEXT);
+            draw2digit(
+                    10 * 3,
+                    lineSpace * lineMultiplier + 1,
+                    tempModel->waterTemp,
+                    getColorByTemp2Points(tempModel->waterTemp, WATER_WARNING_LEVEL, WATER_CRITICAL_LEVEL));
 
-            // LINE 2 (back)
-            uint8_t lineMultiplier = 1;
-            drawLabel(0, lineSpace * lineMultiplier, "<-B", "FAN", ST7735_WHITE);
-            draw4digit(10 * 3, lineSpace * lineMultiplier + 1, fanModel.backRPM, ST7735_WHITE);
+            // LINE 1 right
+//            lineMultiplier = 1;
+            drawLabel(64, lineSpace * lineMultiplier, "VRM", "", ST7735_TEXT);
+            draw2digit(
+                    64 + 10 * 3,
+                    lineSpace * lineMultiplier + 1,
+                    tempModel->vrmTemp,
+                    getColorByTemp2Points(tempModel->vrmTemp, VRM_WARNING_LEVEL, VRM_CRITICAL_LEVEL));
 
-            // LINE 3  (front)
+            uint16_t image[] = {0xFF, 0xFF, 0xFF, 0xFF};
+//            ST7735_DrawImage(0, 10, 2, 2, image);
+
+
+            // LINE 3
             lineMultiplier = 2;
-            drawLabel(0, lineSpace * lineMultiplier, "F->", "FAN", ST7735_WHITE);
-            draw4digit(10 * 3, lineSpace * lineMultiplier + 1, fanModel.frontRPM, ST7735_WHITE);
+            drawLabel(0, lineSpace * lineMultiplier, "T ^", "", ST7735_TEXT);
+            draw4digit(
+                    10 * 3,
+                    lineSpace * lineMultiplier + 1,
+                    fanModel.topRPM,
+                    getColorByTemp2Points(tempModel->waterTemp, 1000, 1250));
+
+            // LINE 4
+            lineMultiplier = 3;
+            drawLabel(0, lineSpace * lineMultiplier, "F->", "", ST7735_TEXT);
+            draw4digit(
+                    10 * 3,
+                    lineSpace * lineMultiplier + 1,
+                    fanModel.frontRPM,
+                    getColorByTemp2Points(tempModel->waterTemp, 750, 900));
+
+            // LINE 5
+            lineMultiplier = 4;
+            drawLabel(0, lineSpace * lineMultiplier, "<-B", "", ST7735_TEXT);
+            draw4digit(
+                    10 * 3,
+                    lineSpace * lineMultiplier + 1,
+                    fanModel.backRPM,
+                    getColorByTemp2Points(tempModel->waterTemp, 750, 900));
+
+//            // LINE 6 TODO enable for bottom fans
+//            lineMultiplier = 5;
+//            drawLabel(0, lineSpace * lineMultiplier, "BTT", "FAN", ST7735_WHITE);
+//            draw4digit(10 * 3, lineSpace * lineMultiplier + 1, fanModel.bottomRPM, ST7735_WHITE);
 
 
 
-            drawAnimation(100, 100, 7, ST7735_WHITE);
             redrawTimer = HAL_GetTick();
         }
+
+        drawAnimation(120, 120, ST7735_WHITE);
     }
 
 private:
@@ -76,50 +117,38 @@ private:
             uint16_t limit,
             uint16_t frameColor,
             uint16_t color) {
+
+        // TODO add check for value and offset/limit
+
         ST7735_DrawRect(x, y, w, h, frameColor);
         ST7735_FillRectangle(x + 2, y + 2, w - 4, 6, ST7735_BLACK);
         ST7735_FillRectangle(x + 2, y + 2, (int)(((float)(value - offset)/(float)limit)*(float)(w - 4))%(w - 3), h - 4, color);
     }
 
-    void drawAnimation(int16_t x, int16_t y, uint8_t size, uint16_t color) {
-        if (animation) {
-            ST7735_FillCircle(x, y, size, color);
-        } else {
-            ST7735_FillCircle(x, y, size, ST7735_BLACK);
-            ST7735_DrawCircle(x, y, size, color);
-        }
+    void drawAnimation(int16_t x, int16_t y, uint16_t color) {
 
-        if (HAL_GetTick() - animationTimer > 1000) {
+        if (HAL_GetTick() - animationTimer > 400) {
+            ST7735_FillCircle(x, y, animationSize, ST7735_BLACK);
+            ST7735_FillCircle(x, y, animationTargetSize, color);
             animationTimer = HAL_GetTick();
-            animation = !animation;
+            animationTargetSize = animationTargetSize + ((animationDirection) ? -1 : 1);
+            if (animationTargetSize == animationSize || animationTargetSize == 3) {
+                animationDirection = !animationDirection;
+            }
         }
-
     }
 
-//    void demoTFT() {
-//        // LINE 1
-//        ST7735_DrawString(0, 0, "CPU", Font_7x10, 0x74F4, ST7735_BLACK);
-//        ST7735_DrawString(0, 10, "FAN", Font_7x10, 0x74F4, ST7735_BLACK);
-//
-//        snprintf(buff, sizeof(buff), "%d", k);
-//        ST7735_DrawString(10*3, 1, buff, Font_11x18, ST7735_WHITE, ST7735_BLACK);
-//
-//
-//
-////    ST7735_DrawString(0,64, usartprop.usart_buf, Font_7x10, ST7735_WHITE, ST7735_BLACK);
-//
-//        // // LINE 2
-//        // ST7735_DrawString(0, 18, buff, Font_11x18, ST7735_WHITE, ST7735_BLACK);
-//
-//
-//        for (int i = 0; i < sizeof(buff); i++) {
-//            buff[i]=0;
-//        }
-//
-//        k+=5;
-//
-//        HAL_Delay(1000);
-//    }
+    uint16_t getColorByTemp2Points(uint16_t value, uint16_t warnLevel, uint16_t criticalLevel) {
+        if (value < warnLevel) {
+            return ST7735_NORMAL;
+        } else {
+            if (value < criticalLevel) {
+                return ST7735_WARNING;
+            } else {
+                return ST7735_CRITICAL;
+            }
+        }
+    }
 };
 
 

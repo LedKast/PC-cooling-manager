@@ -8,10 +8,10 @@
 
 
 class Orchestrator {
-    FanController frontController = FanController(&PWM_FRONT, BEQUIET_BL040_140MM, TEMP_MAP_WATER_FRONT);
-    FanController topController = FanController(&PWM_TOP, BEQUIET_BL039_120MM, TEMP_MAP_WATER_RADIATOR_120MM);
-    FanController backController = FanController(&PWM_BACK, BEQUIET_BL040_140MM, TEMP_MAP_WATER_BACK);
-    FanController bottomController = FanController(&PWM_BOTTOM, BEQUIET_BL040_140MM, TEMP_MAP_WATER_BOTTOM);
+    FanController frontController = FanController(&PWM_FRONT, BEQUIET_BL040_140MM);
+    FanController topController = FanController(&PWM_TOP, BEQUIET_BL039_120MM);
+    FanController backController = FanController(&PWM_BACK, BEQUIET_BL040_140MM);
+    FanController bottomController = FanController(&PWM_BOTTOM, BEQUIET_BL040_140MM);
     GUI gui;
     FanModel fansRPM = FanModel();
     TempReader tempReader = TempReader();
@@ -31,7 +31,6 @@ public:
             updateFans();
 
             gui.draw(temps, fansRPM, 500);
-            // TODO add by VRM changing
 
             // TODO add buttons, add service mode (send test data via BT)
 
@@ -48,10 +47,34 @@ private:
     }
 
     void updateFans() {
-        fansRPM.frontRPM = frontController.updateChannel(temps->waterTemp, MIN_BORDER_WATER_TEMP, MAX_BORDER_WATER_TEMP, FAN_UPDATE_DELAY);
-        fansRPM.topRPM = topController.updateChannel(temps->waterTemp, MIN_BORDER_WATER_TEMP, MAX_BORDER_WATER_TEMP, FAN_UPDATE_DELAY);
-        fansRPM.backRPM = backController.updateChannel(temps->waterTemp, MIN_BORDER_WATER_TEMP, MAX_BORDER_WATER_TEMP, FAN_UPDATE_DELAY);
-        fansRPM.bottomRPM = bottomController.updateChannel(temps->waterTemp, MIN_BORDER_WATER_TEMP, MAX_BORDER_WATER_TEMP, FAN_UPDATE_DELAY);
+        fansRPM.topRPM = topController.updateChannel(
+                temps->waterTemp,
+                MIN_BORDER_WATER_TEMP,
+                MAX_BORDER_WATER_TEMP,
+                FAN_UPDATE_DELAY,
+                const_cast<TempMap &>(TEMP_MAP_WATER_RADIATOR_120MM));
+
+        // TODO add by VRM changing
+        uint8_t higherTemp = temps->waterTemp;
+
+        // TODO provide another borders and temp map for VRM
+        fansRPM.frontRPM = frontController.updateChannel(
+                temps->waterTemp,
+                MIN_BORDER_WATER_TEMP,
+                MAX_BORDER_WATER_TEMP, FAN_UPDATE_DELAY,
+                const_cast<TempMap &>(TEMP_MAP_WATER_FRONT));
+        fansRPM.backRPM = backController.updateChannel(
+                temps->waterTemp,
+                MIN_BORDER_WATER_TEMP,
+                MAX_BORDER_WATER_TEMP,
+                FAN_UPDATE_DELAY,
+                const_cast<TempMap &>(TEMP_MAP_WATER_BACK));
+        fansRPM.bottomRPM = bottomController.updateChannel(
+                temps->waterTemp,
+                MIN_BORDER_WATER_TEMP,
+                MAX_BORDER_WATER_TEMP,
+                FAN_UPDATE_DELAY,
+                const_cast<TempMap &>(TEMP_MAP_WATER_BOTTOM));
     }
 
     void blinkOnboardLed() {

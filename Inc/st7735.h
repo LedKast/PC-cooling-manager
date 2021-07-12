@@ -124,6 +124,12 @@ extern SPI_HandleTypeDef ST7735_SPI_PORT;
 #define ST7735_YELLOW  0xFFE0
 #define ST7735_WHITE   0xFFFF
 
+// custom colors
+#define ST7735_CRITICAL   0xFB8E
+#define ST7735_WARNING   0xFE4E
+#define ST7735_NORMAL   0x77F1
+#define ST7735_TEXT   ST7735_WHITE
+
 void ST7735_Backlight_On(void);
 void ST7735_Backlight_Off(void);
 void ST7735_Init(void);

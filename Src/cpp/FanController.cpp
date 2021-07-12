@@ -7,19 +7,17 @@ class FanController {
     volatile uint32_t* pwmChannel;
     uint16_t rpm = 0;
     FanSpeedMap fanMap;
-    TempMap tempMap;
 
     long timer = -1;
 
 public:
 
-    FanController(volatile uint32_t* channel, FanSpeedMap fanMap, TempMap tempMap) {
+    FanController(volatile uint32_t* channel, FanSpeedMap fanMap) {
         pwmChannel = channel;
         this->fanMap = fanMap;
-        this->tempMap = tempMap;
     }
 
-    uint16_t updateChannel(uint16_t temp, uint16_t minLimit, uint16_t maxLimit, uint16_t updateDelay) {
+    uint16_t updateChannel(uint16_t temp, uint16_t minLimit, uint16_t maxLimit, uint16_t updateDelay, TempMap& tempMap) {
         if (HAL_GetTick() - timer > updateDelay) {
             uint16_t targetRPM;
 

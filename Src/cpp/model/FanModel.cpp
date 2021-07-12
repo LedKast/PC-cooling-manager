@@ -3,7 +3,7 @@
 
 class FanModel {
 public:
-    uint16_t frontRPM = 0, topRPM = 0, bottomRPM = 0, backRPM = 0;
+    uint16_t frontRPM = 666, topRPM = 666, bottomRPM = 666, backRPM = 666;
 };
 
 #endif //FANMODEL_CPP
