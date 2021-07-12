@@ -3,10 +3,9 @@
 #include "FanController.cpp"
 #include "TempReader.cpp"
 
-#include "configuration_default.h"
+#include "ConfigurationMaps.h"
 
 
-BluetoothUART btUART;
 
 class Orchestrator {
     GUI gui;
@@ -50,7 +49,7 @@ private:
     void setup() {
         // TODO provide huart
         gui = GUI();
-        btUART = BluetoothUART();
+//        btUART = BluetoothUART();
     }
 
     void updateFans() {

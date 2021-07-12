@@ -1,5 +1,6 @@
-#include <configuration_default.h>
+#include "ConfigurationMaps.h"
 #include <map>
+#include <stm32f1xx_hal.h>
 
 
 class FanController {

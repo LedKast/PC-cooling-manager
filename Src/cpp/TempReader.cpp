@@ -1,5 +1,6 @@
+#include "ConfigurationMaps.h"
 #include "model/TempModel.cpp"
-#include "../ds18b20.c"
+#include "ds18b20.h"
 
 class TempReader {
     struct SensorData

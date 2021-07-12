@@ -1,40 +1,4 @@
-#ifndef CLIONSTM32TEST_CONFIGURATION_DEFAULT_H
-#define CLIONSTM32TEST_CONFIGURATION_DEFAULT_H
-
-#include <map>
-
-typedef std::map<uint16_t, uint16_t> FanSpeedMap;   // <RPM, PWM%>
-typedef std::map<uint16_t, uint16_t> TempMap;  // <Temp, RPM>
-
-
-#define CONSOLE_GREETING "PC chill core v1.3\r\n"
-
-// PWM channels
-
-enum PwmChannels {
-    FRONT,
-    BOTTOM,
-    BACK,
-    TOP
-};
-
-#define FAN_UPDATE_DELAY 2500
-
-#define PWM_FRONT TIM3->CCR1   // CH1
-#define PWM_BOTTOM TIM3->CCR2  // CH2
-#define PWM_BACK TIM3->CCR3    // CH3
-#define PWM_TOP TIM3->CCR4     // CH3
-
-// DS18B20 bindings
-
-#define WATER_SENS GPIO_PIN_10
-#define VRM_SENS GPIO_PIN_11
-
-
-// TEMPERATURE BORDERS
-
-#define MIN_BORDER_WATER_TEMP 38
-#define MAX_BORDER_WATER_TEMP 45
+#include "ConfigurationMaps.h"
 
 // TEMPERATURE MAPS <TEMP, RPM>
 
@@ -129,5 +93,3 @@ extern const FanSpeedMap BEQUIET_BL039_120MM = {
         {1450, 97},
         {1500, 100},
 };
-
-#endif //CLIONSTM32TEST_CONFIGURATION_DEFAULT_H

@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "cpp/BluetoothUART.cpp"
+#include "BluetoothUART.h"
 #include <string>
 /* USER CODE END Includes */
 
@@ -248,6 +249,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
     if(huart == &huart2) {
         btUART.transmitter(huart);
         btUART.receiver(huart);
+// TODO handler for UART
     }
 }
 /* USER CODE END 1 */
