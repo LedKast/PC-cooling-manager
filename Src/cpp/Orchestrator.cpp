@@ -3,18 +3,19 @@
 #include "FanController.cpp"
 #include "TempReader.cpp"
 
-#include "ConfigurationMaps.h"
-
+#include "Configuration.h"
+#include "Maps.h"
 
 
 class Orchestrator {
-    GUI gui;
-    TempReader tempReader = TempReader();
-    TempModel* temps;
     FanController frontController = FanController(&PWM_FRONT, BEQUIET_BL040_140MM, TEMP_MAP_WATER_FRONT);
     FanController topController = FanController(&PWM_TOP, BEQUIET_BL039_120MM, TEMP_MAP_WATER_RADIATOR_120MM);
     FanController backController = FanController(&PWM_BACK, BEQUIET_BL040_140MM, TEMP_MAP_WATER_BACK);
     FanController bottomController = FanController(&PWM_BOTTOM, BEQUIET_BL040_140MM, TEMP_MAP_WATER_BOTTOM);
+    GUI gui;
+    FanModel fansRPM = FanModel();
+    TempReader tempReader = TempReader();
+    TempModel* temps;
 
     GPIO_PinState indicatorLed = GPIO_PIN_SET;
     long loopStateTimer = -1;
@@ -26,19 +27,13 @@ public:
 
     [[noreturn]] void loop() {
         while (true) {
-            tempReader.read();
-            temps = tempReader.getTemps();
-            gui.draw(temps, 500);
-
+            temps = tempReader.read();
             updateFans();
 
+            gui.draw(temps, fansRPM, 500);
             // TODO add by VRM changing
 
             // TODO add buttons, add service mode (send test data via BT)
-//            PWM_TOP = 255;
-//            PWM_FRONT = 255;
-//            PWM_BOTTOM = 255;
-//            PWM_BACK = 255;
 
 //            btUART.receiver(&huart2);
             blinkOnboardLed();
@@ -53,11 +48,10 @@ private:
     }
 
     void updateFans() {
-        frontController.updateChannel(temps->waterTemp, MIN_BORDER_WATER_TEMP, MAX_BORDER_WATER_TEMP, FAN_UPDATE_DELAY);
-        topController.updateChannel(temps->waterTemp, MIN_BORDER_WATER_TEMP, MAX_BORDER_WATER_TEMP, FAN_UPDATE_DELAY);
-        // TODO back is problem channel
-//        backController.updateChannel(temps->waterTemp, MIN_BORDER_WATER_TEMP, MAX_BORDER_WATER_TEMP, FAN_UPDATE_DELAY);
-        bottomController.updateChannel(temps->waterTemp, MIN_BORDER_WATER_TEMP, MAX_BORDER_WATER_TEMP, FAN_UPDATE_DELAY);
+        fansRPM.frontRPM = frontController.updateChannel(temps->waterTemp, MIN_BORDER_WATER_TEMP, MAX_BORDER_WATER_TEMP, FAN_UPDATE_DELAY);
+        fansRPM.topRPM = topController.updateChannel(temps->waterTemp, MIN_BORDER_WATER_TEMP, MAX_BORDER_WATER_TEMP, FAN_UPDATE_DELAY);
+        fansRPM.backRPM = backController.updateChannel(temps->waterTemp, MIN_BORDER_WATER_TEMP, MAX_BORDER_WATER_TEMP, FAN_UPDATE_DELAY);
+        fansRPM.bottomRPM = bottomController.updateChannel(temps->waterTemp, MIN_BORDER_WATER_TEMP, MAX_BORDER_WATER_TEMP, FAN_UPDATE_DELAY);
     }
 
     void blinkOnboardLed() {

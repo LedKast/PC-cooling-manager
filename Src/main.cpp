@@ -108,10 +108,6 @@ int main(void)
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
 
   Orchestrator orchestrator = Orchestrator(&huart2);
-
-  // DS18B20 temp
-  port_init();
-  ds18b20_init(SKIP_ROM);
   /* USER CODE END 2 */
 
   /* Infinite loop */

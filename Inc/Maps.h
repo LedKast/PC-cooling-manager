@@ -1,8 +1,9 @@
-#include "ConfigurationMaps.h"
+#ifndef CLIONSTM32TEST_MAPS_H
+#define CLIONSTM32TEST_MAPS_H
 
 // TEMPERATURE MAPS <TEMP, RPM>
 
-extern const TempMap TEMP_MAP_WATER_RADIATOR_120MM = {
+const TempMap TEMP_MAP_WATER_RADIATOR_120MM = {
         {MIN_BORDER_WATER_TEMP, 450},
         {39,                    450},
         {40,                    450},
@@ -14,7 +15,7 @@ extern const TempMap TEMP_MAP_WATER_RADIATOR_120MM = {
 };
 
 // TODO set map
-extern const TempMap TEMP_MAP_WATER_FRONT = {
+const TempMap TEMP_MAP_WATER_FRONT = {
         {MIN_BORDER_WATER_TEMP, 450},
         {39,                    450},
         {40,                    450},
@@ -27,7 +28,7 @@ extern const TempMap TEMP_MAP_WATER_FRONT = {
 
 
 // TODO set map
-extern const TempMap TEMP_MAP_WATER_BACK = {
+const TempMap TEMP_MAP_WATER_BACK = {
         {MIN_BORDER_WATER_TEMP, 450},
         {39,                    450},
         {40,                    450},
@@ -39,7 +40,7 @@ extern const TempMap TEMP_MAP_WATER_BACK = {
 };
 
 // TODO set map
-extern const TempMap TEMP_MAP_WATER_BOTTOM = {
+const TempMap TEMP_MAP_WATER_BOTTOM = {
         {MIN_BORDER_WATER_TEMP, 450},
         {39,                    450},
         {40,                    450},
@@ -53,7 +54,7 @@ extern const TempMap TEMP_MAP_WATER_BOTTOM = {
 // FAN MAPS <RPM, PWM%>
 
 // TODO update map by real values
-extern const FanSpeedMap BEQUIET_BL040_140MM = {
+const FanSpeedMap BEQUIET_BL040_140MM = {
         {450, 20},
         {500, 32},
         {550, 39},
@@ -69,7 +70,7 @@ extern const FanSpeedMap BEQUIET_BL040_140MM = {
 };
 
 // TODO update map by real values
-extern const FanSpeedMap BEQUIET_BL039_120MM = {
+const FanSpeedMap BEQUIET_BL039_120MM = {
         {450, 20},
         {500, 30},
         {550, 33},
@@ -93,3 +94,5 @@ extern const FanSpeedMap BEQUIET_BL039_120MM = {
         {1450, 97},
         {1500, 100},
 };
+
+#endif //CLIONSTM32TEST_MAPS_H

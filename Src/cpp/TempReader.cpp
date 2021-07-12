@@ -1,4 +1,4 @@
-#include "ConfigurationMaps.h"
+#include "Configuration.h"
 #include "model/TempModel.cpp"
 #include "ds18b20.h"
 
@@ -14,16 +14,19 @@ class TempReader {
     TempModel temps = TempModel();
 
 public:
-    void read() {
+    TempReader() {
+        // DS18B20 temp
+        port_init();
+        ds18b20_init(SKIP_ROM);
+    }
+
+    TempModel* read() {
         // TODO усреднять значение за некоторый промежуток времени (например через стек или кольцевую очередь)
         set_port(VRM_SENS); // VRM
         readDS18(&temps.vrmTemp, &ds18_1);
 
         set_port(WATER_SENS); // water
         readDS18(&temps.waterTemp, &ds18_2);
-    }
-
-    TempModel* getTemps() {
         return &temps;
     }
 
