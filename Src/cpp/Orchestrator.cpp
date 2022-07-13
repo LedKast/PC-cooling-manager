@@ -42,7 +42,7 @@ public:
 private:
     void setup() {
         // TODO provide huart
-        gui = GUI();
+        gui = GUI(SCREEN_ROTATION);
 //        btUART = BluetoothUART();
     }
 

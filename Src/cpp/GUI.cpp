@@ -98,13 +98,22 @@ private:
     }
 
     void draw2digit(int16_t x, int16_t y, int16_t value, int16_t color) {
+        clearBuff(buff3, sizeof(buff3));
         snprintf(buff3, sizeof(buff3), "%d", value);
         ST7735_DrawString(x, y, buff3, Font_11x18, color, ST7735_BLACK);
     }
 
     void draw4digit(int16_t x, int16_t y, int16_t value, int16_t color) {
+        clearBuff(buff5,  sizeof(buff5));
+        // TODO fix 4th number ghosting
         snprintf(buff5, sizeof(buff5), "%d", value);
         ST7735_DrawString(x, y, buff5, Font_11x18, color, ST7735_BLACK);
+    }
+
+    void clearBuff(char buff[], uint16_t size) {
+        for (int i = 0; i < size; ++i) {
+            buff[i] = ' ';
+        }
     }
 
     void drawBarChart(
@@ -138,7 +147,7 @@ private:
         }
     }
 
-    uint16_t getColorByTemp2Points(uint16_t value, uint16_t warnLevel, uint16_t criticalLevel) {
+    static uint16_t getColorByTemp2Points(uint16_t value, uint16_t warnLevel, uint16_t criticalLevel) {
         if (value < warnLevel) {
             return ST7735_NORMAL;
         } else {

@@ -9,6 +9,7 @@ typedef std::map<uint16_t, uint16_t> TempMap;  // <Temp, RPM>
 
 #define CONSOLE_GREETING "PC chill core v1.3\r\n"
 
+#define SCREEN_ROTATION 3
 
 #define FAN_UPDATE_DELAY 2500
 
@@ -25,15 +26,15 @@ typedef std::map<uint16_t, uint16_t> TempMap;  // <Temp, RPM>
 
 // TEMPERATURE BORDERS
 
-#define MIN_BORDER_WATER_TEMP 38
-#define MAX_BORDER_WATER_TEMP 45
+#define MIN_BORDER_WATER_TEMP 35
+#define MAX_BORDER_WATER_TEMP 43
 
 // TEMPERATURE LEVELS
 
 #define VRM_WARNING_LEVEL 70
 #define VRM_CRITICAL_LEVEL 80
 
-#define WATER_WARNING_LEVEL 42
-#define WATER_CRITICAL_LEVEL 44
+#define WATER_WARNING_LEVEL 38
+#define WATER_CRITICAL_LEVEL 40
 
 #endif //CLIONSTM32TEST_CONFIGURATION_H
